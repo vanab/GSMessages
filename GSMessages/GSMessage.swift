@@ -234,9 +234,9 @@ public class GSMessage: NSObject {
 
     public private(set) weak var inView: UIView!
     public private(set) weak var inViewController: UIViewController?
-    
+    let blurView = VisualEffectView()
     public private(set) var containerView = UIView()
-    public private(set) var messageView = VisualEffectView()
+    public private(set) var messageView = UIView()
     public private(set) var messageText = UILabel()
     
     public private(set) var accessibilityIdentifier: String?
@@ -308,9 +308,13 @@ public class GSMessage: NSObject {
 //        let blurEffectView = UIVisualEffectView(effect: blurEffect)
         switch type {
         case .success:
-            messageView.colorTint = .black
-            messageView.colorTintAlpha = 0.7
-            messageView.blurRadius = 5
+            messageView.backgroundColor = .clear
+            
+            blurView.colorTint = .black
+            blurView.colorTintAlpha = 0.5
+            blurView.blurRadius = 5
+            messageView.addSubview(blurView)
+            blurView.frame = messageView.frame
         case .warning:
             messageView.backgroundColor = GSMessage.warningBackgroundColor
         case .error:
@@ -326,7 +330,7 @@ public class GSMessage: NSObject {
         messageText.numberOfLines = textNumberOfLines
         messageText.textColor = textColor
         messageText.textAlignment = textAlignment.nsTextAlignment
-        containerView.addSubview(messageText)
+        messageView.addSubview(messageText)
         messageView.accessibilityIdentifier = accessibilityIdentifier
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateFrames), name: UIDevice.orientationDidChangeNotification, object: nil)
@@ -456,6 +460,7 @@ public class GSMessage: NSObject {
         )
         
         messageView.frame = containerView.bounds
+        blurView.frame = containerView.bounds
     }
     
     func updateCornerRadius() {
