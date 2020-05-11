@@ -120,7 +120,7 @@
 				TargetAttributes = {
 					1885CFC41B4F6FA100F49F2A = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = DBTR8NXFB4;
+						DevelopmentTeam = ANX6333946;
 						LastSwiftMigration = 1020;
 					};
 				};
@@ -303,7 +303,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = DBTR8NXFB4;
+				DEVELOPMENT_TEAM = ANX6333946;
 				INFOPLIST_FILE = GSMessagesExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -320,7 +320,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = DBTR8NXFB4;
+				DEVELOPMENT_TEAM = ANX6333946;
 				INFOPLIST_FILE = GSMessagesExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

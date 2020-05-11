@@ -236,7 +236,7 @@ public class GSMessage: NSObject {
     public private(set) weak var inViewController: UIViewController?
     
     public private(set) var containerView = UIView()
-    public private(set) var messageView = UIView()
+    public private(set) var messageView = VisualEffectView()
     public private(set) var messageText = UILabel()
     
     public private(set) var accessibilityIdentifier: String?
@@ -255,7 +255,7 @@ public class GSMessage: NSObject {
     public private(set) var textAlignment: GSMessageTextAlignment = .center
     public private(set) var textColor: UIColor = .white
     public private(set) var textNumberOfLines: Int = 1
-    
+    let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
     public var messageWidth:  CGFloat {
         return inView.frame.width - margin.horizontal
     }
@@ -304,10 +304,13 @@ public class GSMessage: NSObject {
             observingTableVC = vc
             vc.tableView.addObserver(self, forKeyPath: "contentOffset", options: [.new], context: &observerContext)
         }
-
+        
+//        let blurEffectView = UIVisualEffectView(effect: blurEffect)
         switch type {
         case .success:
-            messageView.backgroundColor = GSMessage.successBackgroundColor
+            messageView.colorTint = .black
+            messageView.colorTintAlpha = 0.7
+            messageView.blurRadius = 5
         case .warning:
             messageView.backgroundColor = GSMessage.warningBackgroundColor
         case .error:
@@ -323,7 +326,7 @@ public class GSMessage: NSObject {
         messageText.numberOfLines = textNumberOfLines
         messageText.textColor = textColor
         messageText.textAlignment = textAlignment.nsTextAlignment
-        messageView.addSubview(messageText)
+        containerView.addSubview(messageText)
         messageView.accessibilityIdentifier = accessibilityIdentifier
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateFrames), name: UIDevice.orientationDidChangeNotification, object: nil)
@@ -592,4 +595,83 @@ private var observerContext = ""
 private func GS_GCDAfter(_ delay:Double, closure:@escaping ()->()) {
     DispatchQueue.main.asyncAfter(
         deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
+}
+
+open class VisualEffectView: UIVisualEffectView {
+    
+    /// Returns the instance of UIBlurEffect.
+    private let blurEffect = (NSClassFromString("_UICustomBlurEffect") as! UIBlurEffect.Type).init()
+    
+    /**
+     Tint color.
+     
+     The default value is nil.
+     */
+    open var colorTint: UIColor? {
+        get { return _value(forKey: "colorTint") as? UIColor }
+        set { _setValue(newValue, forKey: "colorTint") }
+    }
+    
+    /**
+     Tint color alpha.
+     
+     The default value is 0.0.
+     */
+    open var colorTintAlpha: CGFloat {
+        get { return _value(forKey: "colorTintAlpha") as! CGFloat }
+        set { _setValue(newValue, forKey: "colorTintAlpha") }
+    }
+    
+    /**
+     Blur radius.
+     
+     The default value is 0.0.
+     */
+    open var blurRadius: CGFloat {
+        get { return _value(forKey: "blurRadius") as! CGFloat }
+        set { _setValue(newValue, forKey: "blurRadius") }
+    }
+    
+    /**
+     Scale factor.
+     
+     The scale factor determines how content in the view is mapped from the logical coordinate space (measured in points) to the device coordinate space (measured in pixels).
+     
+     The default value is 1.0.
+     */
+    open var scale: CGFloat {
+        get { return _value(forKey: "scale") as! CGFloat }
+        set { _setValue(newValue, forKey: "scale") }
+    }
+    
+    // MARK: - Initialization
+    
+    public override init(effect: UIVisualEffect?) {
+        super.init(effect: effect)
+        
+        scale = 1
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        scale = 1
+    }
+    
+}
+
+// MARK: - Helpers
+private extension VisualEffectView {
+    
+    /// Returns the value for the key on the blurEffect.
+    func _value(forKey key: String) -> Any? {
+        return blurEffect.value(forKeyPath: key)
+    }
+    
+    /// Sets the value for the key on the blurEffect.
+    func _setValue(_ value: Any?, forKey key: String) {
+        blurEffect.setValue(value, forKeyPath: key)
+        self.effect = blurEffect
+    }
+    
 }
