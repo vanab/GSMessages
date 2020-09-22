@@ -677,6 +677,10 @@ private extension VisualEffectView {
     func _setValue(_ value: Any?, forKey key: String) {
         blurEffect.setValue(value, forKeyPath: key)
         self.effect = blurEffect
+        if #available(iOS 14, *) {
+        } else {
+            self.effect = blurEffect
+        }
     }
     
 }
