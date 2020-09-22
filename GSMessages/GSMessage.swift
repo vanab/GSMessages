@@ -234,7 +234,7 @@ public class GSMessage: NSObject {
 
     public private(set) weak var inView: UIView!
     public private(set) weak var inViewController: UIViewController?
-    let blurView = VisualEffectView()
+    let blurView = UIVisualEffectView()
     public private(set) var containerView = UIView()
     public private(set) var messageView = UIView()
     public private(set) var messageText = UILabel()
@@ -310,11 +310,14 @@ public class GSMessage: NSObject {
         case .success:
             messageView.backgroundColor = .clear
             
-            blurView.colorTint = .black
-            blurView.colorTintAlpha = 0.5
-            blurView.blurRadius = 5
-            messageView.addSubview(blurView)
+//            blurView.colorTint = .black
+//            blurView.colorTintAlpha = 0.5
+//            blurView.blurRadius = 5
+//            blurView.blu
+            blurView.effect = UIBlurEffect(style: .dark)
             blurView.frame = messageView.frame
+            messageView.addSubview(blurView)
+            
         case .warning:
             messageView.backgroundColor = GSMessage.warningBackgroundColor
         case .error:
